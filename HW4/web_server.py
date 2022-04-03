@@ -27,7 +27,7 @@ while True:
         c.send(b'HTTP/1.1 200 OK\r\n')
         c.send(b'Content-Type: ' + mimeType.encode() + b'\r\n')
         c.send(b'\r\n')
-        c.send(data)
+        c.send(data) 
     elif filename == 'favicon-1.ico':
         f = open(filename, 'rb')
         mimeType = 'image/x-icon'
