@@ -7,13 +7,15 @@ LENGTH = 20
 while True:
     user_input = input()
 
+    # 디바이스 2 소켓
+    device2_socket = socket(AF_INET, SOCK_STREAM)
+    device2_socket.connect(('localhost', 8888))
+    
     # 디바이스 1 소켓
     device1_socket = socket(AF_INET, SOCK_STREAM)
     device1_socket.connect(('localhost', 7777))
 
-    # 디바이스 2 소켓
-    device2_socket = socket(AF_INET, SOCK_STREAM)
-    device2_socket.connect(('localhost', 8888))
+    
 
     if user_input == '1':
         device1_socket.send(b'Request')
