@@ -8,7 +8,7 @@ c_sock.connect(('localhost', port))
 
 
 while True:
-    msg = input('Enter the message("send [mBoxID] message" or "receive [mBoxID] : ')
+    msg = input('Enter the message("send [mBoxID] message" or "receive [mBoxID]) : ')
     if msg.startswith('send'):  
         c_sock.sendto(msg.encode(), ('localhost', port))
         print('OK')

@@ -1,38 +1,48 @@
 from socket import *
 from collections import deque
-import random
 
 BUFF_SIZE = 1024
 port = 5555
 
-s_sock = socket(AF_INET, SOCK_DGRAM)
-s_sock.bind(('', port))
-box = {}
+s_sock = socket(AF_INET,SOCK_DGRAM)
+s_sock.bind(('',port))
+
+mboxID = {}
 
 while True:
     data, addr = s_sock.recvfrom(BUFF_SIZE)
-    request = data.decode()
+    req = data.decode()
+    
+    if req.startswith('send'):
+        tmp = list(req.split())
+        id = tmp[1]
+        msg = tmp[2:]
+        mesg = ''
 
-    if request.startswith('send'):
-        temp = list(request.split())
-        box_id, message = temp[1], temp[2:]
-        message = " ".join(message)
-        if box_id not in box:
-            box[str(box_id)] = deque([message])
-            print(f"LOG : [{box_id}] <- '{message}'")
-        else:
-            box[str(box_id)].append(message)
-            print(f"LOG : [{box_id}] <- '{message}'")
+        for i in tmp[2:]:
+            mesg = str(mesg) + i + ' '
+        print (mesg)
 
-    elif request.startswith('receive'):
-        box_id = request.split()[1]
-        if box_id not in box:
-            print(f"LOG : [{box_id}] box doesn't exist -> send failed")
-            s_sock.sendto("No messages".encode(), addr)
+        if id not in mboxID:
+            mboxID[str(id)] = deque()
+            mboxID[str(id)].append(mesg)
+            print("mesg came")
+
         else:
-            if box[str(box_id)]:
-                print(f'LOG : [{box_id}] box has message -> send to [{addr}]')
-                s_sock.sendto(box[str(box_id)].popleft().encode(), addr)
+            mboxID[str(id)].append(mesg)
+
+    elif req.startswith('receive'):
+        req_box = req.split()[1]
+
+        if req_box in mboxID:
+            if mboxID[str(req_box)]:
+                sndMsg = mboxID[str(req_box)].popleft()
+                s_sock.sendto(sndMsg.encode(),addr)
             else:
-                print(f'LOG : [{box_id}] box has not message -> send failed')
-                s_sock.sendto("No messages".encode(), addr)
+                s_sock.sendto("no messages".encode(),addr)
+        
+        else:
+            s_sock.sendto("no messages".encode(),addr)
+
+    elif req.startswith('quit'):
+        s_sock.close()

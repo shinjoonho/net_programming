@@ -30,3 +30,30 @@ while True:
         else:
             client.send(str(result).encode())
     client.close()
+
+'''from socket import *
+
+s = socket(AF_INET, SOCK_STREAM)
+s.bind(('', 3333))
+s.listen(5)
+print('waiting...')
+
+while True:
+    client, addr = s.accept()
+    print('connection from ', addr)
+    while True:
+        data = client.recv(1024)
+        if not data:
+            break
+        
+        a, op, b = data.decode().split()
+        if op == '+':
+            result = int(a) + int(b)
+        elif op == '-':
+            result = int(a) - int(b)
+        elif op == '*':
+            result = int(a) * int(b)
+        elif op == '/':
+            result == round((float(a) / float(b)), 1)
+        client.send(str(result).encode())
+    client.close()'''

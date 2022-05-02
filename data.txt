@@ -1,0 +1,8 @@
+Mon Apr 18 22:26:00 2022: Device1: Temp=Temp=40, Humid= Humid=49, Illum= Illum=89
+Mon Apr 18 22:28:41 2022: Device2: Heartbeat=132, Steps=5166, Cal=2248
+Temp=34
+Humid=62
+Illum=130
+Temp=20
+Temp=30
+Temp=3
